@@ -5,7 +5,6 @@ import java.util.Date;
 public class Reservation {
     private int Id;
 
-    /** TODO: Consider use of Campsite object to simplify initial business logic **/
     private int campsiteId;
 
     private Date startDate;

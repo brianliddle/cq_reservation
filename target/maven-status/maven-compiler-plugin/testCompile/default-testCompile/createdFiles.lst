@@ -1,1 +1,2 @@
-com/campsite/model/ReservationTest.class
+com/campsite/ReservationBaseTest.class
+com/campsite/service/ReservationServiceTest.class
