@@ -1,0 +1,5 @@
+com/campsite/dao/impl/ReservationFileStore.class
+com/campsite/model/Campsite.class
+com/campsite/model/Gaprule.class
+com/campsite/dao/ReservationDao.class
+com/campsite/model/Reservation.class
