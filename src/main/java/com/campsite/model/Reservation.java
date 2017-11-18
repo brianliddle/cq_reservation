@@ -1,37 +1,38 @@
 package com.campsite.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Reservation {
-    private int Id;
+    private int id;
 
     private int campsiteId;
 
-    private Date startDate;
-    private Date endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     public Reservation() {}
 
-    public Reservation(int id, int campsiteId, Date startdate, Date enddate) {
-        this.Id = id;
+    public Reservation(int id, int campsiteId, LocalDate startdate, LocalDate enddate) {
+        this.id = id;
         this.campsiteId = campsiteId;
         this.startDate = startdate;
         this.endDate = enddate;
     }
 
     public int getId() {
-        return Id;
+        return id;
     }
 
     public int getCampsiteId() {
         return campsiteId;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 

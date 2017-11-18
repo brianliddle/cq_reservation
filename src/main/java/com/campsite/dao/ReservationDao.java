@@ -2,11 +2,15 @@ package com.campsite.dao;
 
 import com.campsite.model.Reservation;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
-public interface ReservationDao {
-    List<Reservation> getReservations(Date startDate, Date endDate);
+public interface ReservationDAO {
+    List<Reservation> getReservations(LocalDate startDate, LocalDate endDate, int campsiteId);
+
+    Reservation getPriorReservation(LocalDate targetDate, int campsiteId);
+
+    Reservation getNextReservation(LocalDate targetDate, int campsiteId);
 
 
 /** Consider for later development **/

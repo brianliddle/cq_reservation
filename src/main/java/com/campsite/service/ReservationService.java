@@ -2,10 +2,13 @@ package com.campsite.service;
 
 import com.campsite.business.RuleEngine;
 import com.campsite.business.impl.ReservationRule;
-import com.campsite.dao.ReservationDao;
+import com.campsite.dao.CampsiteDAO;
+import com.campsite.dao.ReservationDAO;
+import com.campsite.model.Campsite;
 import com.campsite.model.Gaprule;
 import com.campsite.model.Reservation;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,24 +16,37 @@ import java.util.List;
 /** NOTE, keeping as a concrete class until multiple usecases involving a generic contract is identified **/
 
 public class ReservationService {
-    /** TODO Dependency inject **/
-    private ReservationDao resDao;
-    public void setResDao(ReservationDao resDao) {
+    /** TODO Dependency Inject **/
+    private ReservationDAO resDao;
+    public void setResDao(ReservationDAO resDao) {
         this.resDao = resDao;
     }
 
-    /** TODO Dependency inject **/
+    /** TODO Dependency Inject **/
+    private CampsiteDAO campDao;
+    public void setCampDao(CampsiteDAO campDao) { this.campDao = campDao; }
+
+
+    /** TODO Dependency Inject **/
     private RuleEngine ruleEngine = new ReservationRule();
 
     public ReservationService() {}
 
-    public List<Reservation> getAvailableReservations(Gaprule rule, Date startDate, Date endDate, int campsiteId) {
-        List<Reservation> availReservations = new ArrayList<Reservation>();
-        List<Reservation> currentReservations = resDao.getReservations(startDate, endDate);
-        for (Reservation r : currentReservations) {
-            //TODO:
+    public List<Campsite> getAvailableCampsites(Gaprule rule, LocalDate startDate, LocalDate endDate) {
+        List<Campsite> availCampsites = new ArrayList<Campsite>();
+
+        for (Campsite camp : campDao.getCampsites()) {
+            if (ruleEngine.isValid(startDate, endDate,
+                    resDao.getPriorReservation(startDate, camp.getId()),
+                    resDao.getNextReservation(endDate, camp.getId()),
+                    rule))
+            {
+                availCampsites.add(camp);
+            }
         }
-        return availReservations;
+
+
+        return availCampsites;
     }
 
 
