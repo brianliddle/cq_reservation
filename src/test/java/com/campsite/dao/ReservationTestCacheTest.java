@@ -3,6 +3,7 @@ package com.campsite.dao;
 import com.campsite.ReservationBaseTest;
 import com.campsite.model.Reservation;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.time.LocalDate;
@@ -17,11 +18,13 @@ public class ReservationTestCacheTest extends ReservationBaseTest{
 //        List<Reservation> rez = getReservations(LocalDate startDate, LocalDate endDate, int campsiteId)
 //    }
 
+    @Ignore
     @Test
     public void getPriorReservation() {
         Assert.assertEquals("TODO", true, false);
     }
 
+    @Ignore
     @Test
     public void getNextReservation() {
         Assert.assertEquals("TODO", true, false);

@@ -22,6 +22,21 @@
             <version>LATEST</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>LATEST</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>LATEST</version>
+        </dependency>
+
+
+        <!-- The following was supposed to fix ObjectMapper issues with serializing a LocalDate object.
+        Did not work -->
+
         <!--dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-parameter-names</artifactId>
