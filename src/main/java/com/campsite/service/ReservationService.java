@@ -7,6 +7,8 @@ import com.campsite.dao.ReservationDAO;
 import com.campsite.model.Campsite;
 import com.campsite.model.Gaprule;
 import com.campsite.model.Reservation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -16,6 +18,8 @@ import java.util.List;
 /** NOTE, keeping as a concrete class until multiple usecases involving a generic contract is identified **/
 
 public class ReservationService {
+    private static final Logger log = LogManager.getLogger(ReservationService.class);
+
     /** TODO Dependency Inject **/
     private ReservationDAO resDao;
     public void setResDao(ReservationDAO resDao) {
@@ -25,7 +29,6 @@ public class ReservationService {
     /** TODO Dependency Inject **/
     private CampsiteDAO campDao;
     public void setCampDao(CampsiteDAO campDao) { this.campDao = campDao; }
-
 
     /** TODO Dependency Inject **/
     private RuleEngine ruleEngine = new ReservationRule();
@@ -44,8 +47,6 @@ public class ReservationService {
                 availCampsites.add(camp);
             }
         }
-
-
         return availCampsites;
     }
 

@@ -1,6 +1,5 @@
 package com.campsite.business.impl;
 
-import com.campsite.ReservationBaseTest;
 import com.campsite.model.Gaprule;
 import com.campsite.model.Reservation;
 import org.junit.Assert;
@@ -8,10 +7,10 @@ import org.junit.Test;
 
 import java.time.LocalDate;
 
-public class ReservationRuleTest extends ReservationBaseTest {
+public class ReservationRuleTest  {
 
     @Test
-    //FYI - this is where spock does a great job of simplifying data driven unit testing...
+    //FYI - this is where spock does a great job of simplifying data driven unit testing.
     public void reservationAccepted() {
         ReservationRule ruleEngine = new ReservationRule();
 
@@ -41,6 +40,7 @@ public class ReservationRuleTest extends ReservationBaseTest {
     }
 
     @Test
+    //TODO: Add more thurough test showing one day adjustments before then after pass then fail as expected.
     public void reservationRejected_gapsExist() {
         ReservationRule ruleEngine = new ReservationRule();
 
@@ -84,7 +84,7 @@ public class ReservationRuleTest extends ReservationBaseTest {
 
         //gap of 1
         Gaprule gap = new Gaprule(0,1);
-        Assert.assertFalse("Start and End dates in reverse order should have been rejected.",
+        Assert.assertFalse("Start and End reservation dates in reverse order should have been rejected.",
                 ruleEngine.isValid(startDate, endDate, beforeRes, afterRes, gap));
     }
 

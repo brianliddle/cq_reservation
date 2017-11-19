@@ -1,8 +1,9 @@
 package com.campsite.model;
 
 import java.time.LocalDate;
-import java.util.Date;
 
+
+//TODO:: MAKE COMPARABLE BY campsite, then startDate!!
 public class Reservation {
     private int id;
 
