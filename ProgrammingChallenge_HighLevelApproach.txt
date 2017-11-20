@@ -1,0 +1,34 @@
+Service:
+	ReservationService
+		- Single point of entry to the Reservation application that delegates to DAO and business layers for actual work.
+
+DAO:
+	ReservationDAO
+		- Manages CRUD operations of reservations.
+        - getPriorNextReservation iterates over the reservations to determine the next and prior reservations for a
+          requested reservation, as well as identifies if an existing reservation has a conflict.
+          Please NOTE, that this does so in one iteration of the list of reservations to optimize efficiency and performance.
+
+	CampsiteDAO
+		- Manages CRUD operations of campsites.
+
+Business:
+	RuleEngine
+		- Interface that determines if a reservation is valid with respect to date conflicts identified by ReservationDAO.getPriorNextReservation
+		  as well as gap conflicts.
+		- If we need to change this business logic for different resorts downstream, we could simply use another concrete RuleEngine class that a
+		  factory pattern could identify on the fly.
+
+Model:
+	Reservation
+	Campsite
+	Gaprule
+
+Controller:
+	TODO - add REST API interfacing the Reservation Service
+
+Next steps:
+	- Discuss assumptions and expected outcomes vs my understanding of what's valid gap logic.
+	- Iterate changes from discussion.
+	- Flesh out stubs for all CRUD management that was not relevant towards solving this programming challenge
+	- Add a REST API
