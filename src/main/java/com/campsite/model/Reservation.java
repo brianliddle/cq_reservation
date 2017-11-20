@@ -3,7 +3,11 @@ package com.campsite.model;
 import java.time.LocalDate;
 
 
-//TODO:: MAKE COMPARABLE BY campsite, then startDate!!
+/**
+ * Reservation pojo.
+ *
+ * TODO: implement Comparable to aid in sorting and retrieving.
+ */
 public class Reservation {
     private int id;
 
@@ -37,7 +41,4 @@ public class Reservation {
         return endDate;
     }
 
-/* CONSIDER FOR FUTURE DEVELOPMENT */
-//    private String reserveeId;
-//    private int numberOfGuests;
 }

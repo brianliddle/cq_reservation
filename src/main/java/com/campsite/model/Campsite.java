@@ -1,5 +1,10 @@
 package com.campsite.model;
 
+/**
+ * Campsite pojo.
+ *
+ * TODO: implement Comparable to aid in sorting and retrieving.
+ */
 public class Campsite {
 
     public Campsite() {}

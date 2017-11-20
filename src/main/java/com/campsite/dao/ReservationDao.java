@@ -8,16 +8,46 @@ import java.util.List;
 import java.util.Map;
 
 public interface ReservationDAO {
-    List<Reservation> getReservations(LocalDate startDate, LocalDate endDate, int campsiteId);
+
+    /**
+     * Returns a map containing the reservation following and preceding a requested reservation
+     * start and end date for a given campsite.
+     * NOTE: If a conflict of dates is found, adds the CONFLICT reservation to the map.
+     *
+     * @param startDate
+     * @param endDate
+     * @param campsiteId
+     * @return
+     */
     Map<ReservationHashKey, Reservation> getNextPriorReservation(LocalDate startDate, LocalDate endDate, int campsiteId);
 
-/** Consider for later development **/
+    /**
+     * Retrieve all reservations between a start and enddate.
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    List<Reservation> getReservations(LocalDate startDate, LocalDate endDate);
 
-//    Reservation getReservation(int reservationId);
-//    void createReservation(Reservation r);
-//    vod updateReservation(int reservationId, Reservation r);
-//    void deleteReservation(int reservationId);
+    /**
+     * Retrieve all reservations between a start and enddate for a particular campsite.
+     * @param startDate
+     * @param endDate
+     * @param campsiteId
+     * @return
+     */
+    List<Reservation> getReservations(LocalDate startDate, LocalDate endDate, int campsiteId);
 
-//   List<Reservation> getReservations(int resortId);
-//   List<Reservation> getReservations(List<int> resorts, startDate, endDate);
+    /**
+     * Creates a reservation.
+     * @param r
+     * @return
+     */
+    int createReservation(Reservation r);
+
+    /**
+     * Updates an existing reservation.
+     * @param r
+     */
+    void updateReservation(Reservation r);
 }

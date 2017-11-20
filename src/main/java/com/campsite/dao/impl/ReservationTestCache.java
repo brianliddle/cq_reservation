@@ -9,23 +9,25 @@ import java.util.*;
 
 import static com.campsite.business.ReservationUtil.hasConflict;
 
-/** THIS CLASS USED EXCLUSIVELY FOR TEST CASES, all other cases should use a repository **/
-
+/**
+ * ReservationDAO implementation used EXCLUSIVELY for running test cases.
+ * All other cases must use a repository.
+ */
 public class ReservationTestCache implements ReservationDAO {
 
-    //TODO: Convert to a HashMap<campId,List<Reservation>>
-    private Map<Integer,ArrayList<Reservation>> reservations = new HashMap<Integer, ArrayList<Reservation>>();
+    private Map<Integer,ArrayList<Reservation>> reservations =
+            new HashMap<Integer, ArrayList<Reservation>>();
 
-    public List<Reservation> getReservations(LocalDate startDate, LocalDate endDate) {
-        //TODO:
-        return null;
-    }
-
-    public List<Reservation> getReservations(LocalDate startDate, LocalDate endDate, int campsiteId) {
-        //TODO:
-        return null;
-    }
-
+    /**
+     * Returns a map containing the reservation following and preceding a requested reservation
+     * start and end date for a given campsite.
+     * NOTE: If a conflict of dates is found, adds the CONFLICT reservation to the map.
+     *
+     * @param startDate
+     * @param endDate
+     * @param campsiteId
+     * @return
+     */
     public Map<ReservationHashKey, Reservation> getNextPriorReservation(LocalDate startDate, LocalDate endDate, int campsiteId)
     {
         Reservation prior = null;
@@ -34,9 +36,9 @@ public class ReservationTestCache implements ReservationDAO {
                 new EnumMap<ReservationHashKey, Reservation>(ReservationHashKey.class);
 
         for (Reservation r : reservations.get(campsiteId)) {
-            //start:end dates overlap with existing reservation
+            //Check if start:end dates overlap with existing reservation
             if (hasConflict(startDate, endDate, r)) {
-                returnRes.put(ReservationHashKey.CONFLICT, null);
+                returnRes.put(ReservationHashKey.CONFLICT, r);
                 return returnRes;
             }
 
@@ -56,8 +58,16 @@ public class ReservationTestCache implements ReservationDAO {
         return returnRes;
     }
 
-    /** NOTE, circumvents RuleEngine **/
-    //TODO leverage Collections.sort AFTER make reservations comparable!!!
+    /**
+     * Adds reservations in bulk.
+     *
+     * TODO: Add reservation gap and conflict validation
+     * TODO: leverage Colleciton.sort to assist with perfomance.
+     *
+     * NOTE: Currently this is used exclusively for running unit tests.
+     *
+     * @param resList - Reservations to add.
+     */
     public void addReservations(List<Reservation> resList) {
         for (Reservation r : resList) {
             if (reservations.containsKey(r.getCampsiteId())) {
@@ -70,7 +80,53 @@ public class ReservationTestCache implements ReservationDAO {
         }
     }
 
+    /**
+     * Clears all reservations.
+     * NOTE: Currently this is used exclusively for running unit tests.
+     */
     public void clearReservations() {
         reservations.clear();
     }
+
+    /**
+     * Retrieve all reservations between a start and enddate.
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public List<Reservation> getReservations(LocalDate startDate, LocalDate endDate) {
+        /** STUB for later development **/
+        return null;
+    }
+
+    /**
+     * Retrieve all reservations between a start and enddate for a particular campsite.
+     * @param startDate
+     * @param endDate
+     * @param campsiteId
+     * @return
+     */
+    public List<Reservation> getReservations(LocalDate startDate, LocalDate endDate, int campsiteId) {
+        /** STUB for later development **/
+        return null;
+    }
+
+    /**
+     * Creates a reservation.
+     * @param r
+     * @return
+     */
+    public int createReservation(Reservation r) {
+        /** STUB for later development **/
+        return -1;
+    }
+
+    /**
+     * Updates an existing reservation.
+     * @param r
+     */
+    public void updateReservation(Reservation r) {
+        /** STUB for later development **/
+    }
+
 }

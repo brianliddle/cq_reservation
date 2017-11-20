@@ -3,8 +3,9 @@ import java.time.LocalDate;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 /**
- * NOTE, this class is simply a placeholder to have a discussion about the meaning of gaps.
- * please see comments in GapUtilTest for further discussions.
+ * NOTE, this class is simply a placeholder to thoroughly test GAP logic, as well as
+ * to have a discussion about the definition of gaps between reservations.
+ * Please see comments in GapUtilTest for further details / discussion.
  *
  * NOTE, this could also be converted to a Lambda to allow for more dynamic gap analysis scenarios.
  * **/

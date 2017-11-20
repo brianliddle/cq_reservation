@@ -12,17 +12,6 @@ Your task is to implement the most basic version of a gap rule, which prevents n
 
 ------------------------------------
 
-Deliverables we expect from you include:
-
-   1. Souce code for executable program that takes in a standard JSON input file (described below) and returns which campsites are available to book
-   2. Executable test cases for your program
-   3. Written documentation that explains:
-      a. How to build and run your program and tests
-      b. A high-level description of your approach to solving the problem
-      c. Any assumptions or special considerations that were made
-
-------------------------------------
-
 We've provided a sample input file (attached to this email), which you can use to test your program.
 
 The expected output of the sample file is:
@@ -37,3 +26,19 @@ The JSON input file contains a single object with the following keys:
    "gapRules": an array of different gap rules. Each rule has a single property "gapSize" which is the size of the disallowed gap.
    "campsites": An array of the campsites that are available to book, each has an id and name.
    "reservations": An array of the existing reservations that must be considered. Each has a campsite ID, start date, and end date
+
+
+INSTALL:
+   Download and install Java jdk8
+      https://docs.oracle.com/javase/8/docs/technotes/guides/install/install_overview.html
+
+   Download and install maven
+      https://maven.apache.org/install.html
+
+   Alternatively, this can be run from Intellij as there's an cs_reservation.iml that will set up
+   this project in intellij, and can be run directly from it.
+
+RUN:
+   mvn clean compile test
+
+   The test that exercises the test-case.json is com.campsite.service.ReservationServiceTest

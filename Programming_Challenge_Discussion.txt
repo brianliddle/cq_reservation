@@ -1,0 +1,84 @@
+Discussion of Campspot Programming Challenge - Campsite Reservation Service
+
+CONTEXT:
+Most destination resorts don’t host guests who are willing to stay for only one night. Their
+guests are not simply passing through the area; they’ve often travelled far with lots of
+luggage specifically to stay there, and it’s not worth it for them to stay one night. As a
+result, a reservation system for resorts needs to prevent one night gaps in its reservation
+grid, or schedule of inventory. If one-night gaps occur on the grid, they will not be sold,
+and this results in lost income for the resort owner. For example, Campspot uses a one-night
+gap rule, as this is a common problem for camping resort owners. However, owners’ gap problems
+aren’t limited to one-night gaps. Some resorts only host guests who stay a minimum three or
+four nights. Those resorts may want to prevent one-, two-, and three-night gaps.
+
+To support this use case, Campspot has a configurable business rule called a “gap rule” that
+allows resort owners to define which types of gaps are not allowed.
+
+Your task is to implement the most basic version of a gap rule, which prevents new reservations
+on a campsite that will create gaps of a specified size.
+
+RULES:
+1.) When creating a reservation we cannot allow a new reservation to be made if there's a conflict with an existing reservation.
+2.) When creating a reservation we cannot allow a new reservation to be made if there's an invalid gap between the new
+    reservation and existing reservations.
+3.) Gaps are defined as whole number of days between two reservations.
+4.) A Gaprule defines the number of days between two reservations that are invalid.
+
+
+ASSUMPTIONS:
+1.) Gaps are whole number of days between existing reservations and the reservation we're trying to create.
+
+2.) A campsite is unavailable if there are conflicts with an existing reservation.
+
+3.) A campsite is available only if there are more days than the gapRule between the target reservation
+    and existing reservations.
+
+4.) I assume that in general, we would not allow reservations to be manipulated / updated in the past.
+    However, the test data is for 2016 so will not place any restrictions when managing reservations
+    in the past.
+
+5.) Assume that each data set is representative of one resort.  i.e. No nested complexities of searching
+    for campsites across multiple resorts.
+
+6.) Assume that dates are inclusive, meaning 2016-06-07 to 2016-06-10, means the following whole days [07, 08, 09, 10].
+
+
+Current Reservations
+		JUNE
+Camp 	01 02 03 04 05 06 |07 08 09 10| 11 12 13 14 15 16 17 18    GAPS      RESULT
+ 1      X  X  X  X  G  G  |           | X  X  X                    [2,0]     1 gap = Available, Unavailable for 2,3 gaps.
+ 2                        |   X  X    |                            CONFLICT  Unavailable
+ 3               X  X  X  |           | G  G  G  X  X  X           [0,3]     1,2 gap = Available, Unavailable for 3 gap.
+ 4            X  X  X  G  |           ! G  G  X  X                 [1,2]     Unavailable
+ 5            X  X  X  X  |           | G  X  X  x                 [0,1]     Unavailable
+ 6               X  X  X  |           | X  X           X           [0,0]     Available
+ 7            X  X  G  G  |X  X  X    | G  G  X  X  X  X           CONFLICT  Unavailable
+ 8      X  X        X  X  |           |                            [0,NA]    Available
+ 9            X  X  X  G  |           | G  X  X  X  X  X           [1,1]     Unavailable
+
+ Given this understanding, the following campsites are available between 2016-06-07 and 2016-06-10:
+	 Gaprule = 1 -> [1, 3, 6, 8]
+	 Gaprule = 2 -> [3, 6, 8]
+	 Gaprule = 3 -> [6, 8]
+
+Camp id - names:
+	1 - Grizzly Adams Adventure Cabin
+    2 - Lewis and Clark Camp Spot
+    3 - Jonny Appleseed Log Cabin
+    4 - Davey Crockett Camphouse
+    5 - Daniel Boone Bungalow
+    6 - Teddy Roosevelt Tent Site
+    7 - Edmund Hillary Igloo
+    8 - Bear Grylls Cozy Cave
+    9 - Wyatt Earp Corral
+
+Per the instructions, the following camps are available (although it was not stated which gapRule(s) that they apply against. )
+   5 - "Daniel Boone Bungalow"
+   6 - "Teddy Roosevelt Tent Site"
+   8 - "Bear Grylls Cozy Cave"
+   9 - "Wyatt Earp Corral"
+
+Given my understanding of the gap rules, I see the following discrepancies and would like to discuss this further:
+ - Campsites 5 and 9 are not available for the dates 2016-06-07 - 2016-06-10 as they have a gap of 1.
+ - Campsite 3 meets the criteria for a gaprule of 2 days.
+
