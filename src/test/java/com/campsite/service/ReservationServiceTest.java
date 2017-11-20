@@ -11,6 +11,9 @@ import org.junit.Test;
 
 import java.util.List;
 
+/**
+ * The main integration test - which leverages the test-case.json test data.
+ */
 public class ReservationServiceTest extends ReservationBaseTest {
 
     @Test
@@ -28,7 +31,7 @@ public class ReservationServiceTest extends ReservationBaseTest {
                     break;
 
                 default: Assert.assertTrue(
-                        "Gaprule, " +rule.getGapSize()+ ", exists that hasn't been defined yet.",
+                        "Gaprule, " +rule.getGapSize()+ ", exists that a test hasn't been defined yet.",
                         true == false);
             }
         }

@@ -15,6 +15,12 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
 
+/**
+ * Parent of integration tests, that utilize the same test-case.json test data.
+ * 
+ * TODO: leverage depenency injection so that we're working against interfaces
+ *       and not concrete implementations.
+ */
 public class ReservationBaseTest {
 
     public static String testFile = "src/test/resources/test-case.json";

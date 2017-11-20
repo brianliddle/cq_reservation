@@ -6,14 +6,18 @@ import org.junit.Test;
 
 import java.time.LocalDate;
 
+/** The following tests the GapUtil, as well as be a point of
+ * conversation to discuss discrepancies on what I believe is the accepted
+ * test criteria, vs the expected results which have some conflicts.
+ *
+ * Please note, that for all test cases we're using a
+ * start date of 2016-06-07 and an end date of 2016-06-10
+ **/
+
 public class GapUtilTest {
     @Test
     public void gapTest() {
         GapUtil util = new GapUtil();
-
-        /** The following tests the GapUtil, as well as be a point of
-         * conversation to discuss discrepancies on what I believe is the accepted
-         * test criteria, vs the expected results which have some conflicts. **/
 
         // Gap of 2, rejected by gaprules of 2 and 3.
         // {"campsiteId": 1, "startDate": "2016-06-01", "endDate": "2016-06-04"},
