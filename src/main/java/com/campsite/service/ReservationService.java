@@ -1,5 +1,6 @@
 package com.campsite.service;
 
+import com.campsite.business.ReservationConflictException;
 import com.campsite.business.RuleEngine;
 import com.campsite.business.impl.ReservationRule;
 import com.campsite.dao.CampsiteDAO;
@@ -39,15 +40,29 @@ public class ReservationService {
         List<Campsite> availCampsites = new ArrayList<Campsite>();
 
         for (Campsite camp : campDao.getCampsites()) {
-            if (ruleEngine.isValid(startDate, endDate,
-                    resDao.getPriorReservation(startDate, camp.getId()),
-                    resDao.getNextReservation(endDate, camp.getId()),
-                    rule))
+            Reservation beforeRes;
+            Reservation afterRes;
+
+            //While an anti-pattern, I leveraged throwing a checked exception to keep from iterating against a
+            // collection of reservations more than once. Consider refactoring so that neither performance, nor
+            // separation of concerns is effected that doesn't involve using an exception for logic handling.
+            try {
+                beforeRes = resDao.getPriorReservation(startDate, endDate, camp.getId());
+                afterRes = resDao.getNextReservation(startDate, endDate, camp.getId());
+            } catch (ReservationConflictException e) {
+                continue;
+            }
+
+            if (ruleEngine.isValid(startDate, endDate, beforeRes, afterRes, rule))
             {
                 availCampsites.add(camp);
             }
         }
         return availCampsites;
+    }
+
+    public List<Reservation> getUpcomingReservations(int campsiteId) {
+        return resDao.getReservations(LocalDate.now(), LocalDate.MAX, campsiteId);
     }
 
 

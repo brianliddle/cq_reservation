@@ -1,7 +1,5 @@
 package com.campsite;
 
-import com.campsite.dao.CampsiteDAO;
-import com.campsite.dao.ReservationDAO;
 import com.campsite.dao.impl.CampsiteTestCache;
 import com.campsite.dao.impl.ReservationTestCache;
 import com.campsite.model.Campsite;
@@ -9,8 +7,8 @@ import com.campsite.model.Gaprule;
 import com.campsite.model.Reservation;
 import com.campsite.service.ReservationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Assert;
 import org.junit.BeforeClass;
-
 
 import java.io.File;
 import java.time.LocalDate;
@@ -43,7 +41,6 @@ public class ReservationBaseTest {
 
             HashMap<String, Object> searchMap = (HashMap<String, Object>)testMap.get("search");
 
-            //The following is a hack to use LocalDate since running into issues with ObjectMapper
             startDate = toLocalDate(mapper.convertValue(searchMap.get("startDate"), Date.class));
             endDate = toLocalDate(mapper.convertValue(searchMap.get("endDate"), Date.class));
 
@@ -69,7 +66,7 @@ public class ReservationBaseTest {
                         testRez.size(),
                         new Integer(rMap.get("campsiteId").toString()),
                         LocalDate.parse(rMap.get("startDate").toString()),
-                        LocalDate.parse(rMap.get("startDate").toString()));
+                        LocalDate.parse(rMap.get("endDate").toString()));
                 testRez.add(r);
             }
             rezDao.clearReservations();
@@ -89,13 +86,14 @@ public class ReservationBaseTest {
             rezSvc.setCampDao(campDao);
 
         }catch (Exception e) {
-            //Assert.assertEquals("Failed to load resources!!", true,false);
+            Assert.assertEquals("Failed to load resources!!", true, false);
             e.printStackTrace();
         }
     }
 
-
+    // The following is a hack to convert Date to LocalDate since running into issues serializing
+    // LocalDate with ObjectMapper
     private static LocalDate toLocalDate(Date d) {
-        return d.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        return d.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().plusDays(1);
     }
 }

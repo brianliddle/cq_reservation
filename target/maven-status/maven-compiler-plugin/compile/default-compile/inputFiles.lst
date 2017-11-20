@@ -1,10 +1,13 @@
 /Users/bliddle/IdeaProjects/cs_reservation/src/main/java/com/campsite/model/Reservation.java
 /Users/bliddle/IdeaProjects/cs_reservation/src/main/java/com/campsite/service/ReservationService.java
 /Users/bliddle/IdeaProjects/cs_reservation/src/main/java/com/campsite/dao/ReservationDAO.java
-/Users/bliddle/IdeaProjects/cs_reservation/src/main/java/com/campsite/model/Gaprule.java
-/Users/bliddle/IdeaProjects/cs_reservation/src/main/java/com/campsite/business/RuleEngine.java
 /Users/bliddle/IdeaProjects/cs_reservation/src/main/java/com/campsite/dao/impl/ReservationTestCache.java
 /Users/bliddle/IdeaProjects/cs_reservation/src/main/java/com/campsite/dao/CampsiteDAO.java
 /Users/bliddle/IdeaProjects/cs_reservation/src/main/java/com/campsite/business/impl/ReservationRule.java
+/Users/bliddle/IdeaProjects/cs_reservation/src/main/java/com/campsite/business/ReservationConflictException.java
+/Users/bliddle/IdeaProjects/cs_reservation/src/main/java/com/campsite/model/Gaprule.java
+/Users/bliddle/IdeaProjects/cs_reservation/src/main/java/com/campsite/business/RuleEngine.java
+/Users/bliddle/IdeaProjects/cs_reservation/src/main/java/com/campsite/business/ReservationUtil.java
+/Users/bliddle/IdeaProjects/cs_reservation/src/main/java/com/campsite/business/GapUtil.java
 /Users/bliddle/IdeaProjects/cs_reservation/src/main/java/com/campsite/dao/impl/CampsiteTestCache.java
 /Users/bliddle/IdeaProjects/cs_reservation/src/main/java/com/campsite/model/Campsite.java

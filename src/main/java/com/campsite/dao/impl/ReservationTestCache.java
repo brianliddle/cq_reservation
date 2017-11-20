@@ -1,8 +1,10 @@
 package com.campsite.dao.impl;
 
+import com.campsite.business.ReservationConflictException;
 import com.campsite.dao.ReservationDAO;
 import com.campsite.model.Campsite;
 import com.campsite.model.Reservation;
+import static com.campsite.business.ReservationUtil.hasConflict;
 
 import java.lang.reflect.Array;
 import java.time.LocalDate;
@@ -25,17 +27,20 @@ public class ReservationTestCache implements ReservationDAO {
         return null;
     }
 
-    public Reservation getPriorReservation(LocalDate targetDate, int campsiteId) {
+    public Reservation getPriorReservation(LocalDate startDate, LocalDate endDate, int campsiteId)
+        throws ReservationConflictException
+    {
         Reservation prior = null;
 
         for (Reservation r : reservations.get(campsiteId)) {
             //if targetDate is in between a reservation, immediately return this reservation.
-            if (targetDate.isBefore(r.getEndDate()) && targetDate.isAfter(r.getStartDate())) {
-                return r;
+            //if (targetDate.isBefore(r.getEndDate()) && targetDate.isAfter(r.getStartDate())) {
+            if (hasConflict(startDate, endDate, r)) {
+                throw new ReservationConflictException();
             }
 
             //find the reservation closest to the target date in the future
-            if (! r.getEndDate().isAfter(targetDate) &&
+            if (! r.getEndDate().isAfter(startDate) &&
                 (prior == null ||
                  r.getEndDate().isAfter(prior.getEndDate())
                 ) )
@@ -45,20 +50,22 @@ public class ReservationTestCache implements ReservationDAO {
         return prior;
     }
 
-    public Reservation getNextReservation(LocalDate targetDate, int campsiteId) {
+    public Reservation getNextReservation(LocalDate startDate, LocalDate endDate, int campsiteId)
+            throws ReservationConflictException
+    {
         Reservation next = null;
 
         for (Reservation r : reservations.get(campsiteId)) {
             //if targetDate is in between a reservation, immediately return this reservation.
-            if (targetDate.isBefore(r.getEndDate()) && targetDate.isAfter(r.getStartDate())) {
-                return r;
+            //if (targetDate.isBefore(r.getEndDate()) && targetDate.isAfter(r.getStartDate())) {
+            if (hasConflict(startDate, endDate, r)) {
+                throw new ReservationConflictException();
             }
 
             //find the reservation closest to the target date in the past
-            if (! r.getStartDate().isBefore(targetDate) &&
+            if (! r.getStartDate().isBefore(endDate) &&
                     (next == null || r.getStartDate().isBefore(next.getStartDate())) )
             { next = r; }
-
         }
         return next;
     }

@@ -1,4 +1,6 @@
+/Users/bliddle/IdeaProjects/cs_reservation/src/test/java/com/campsite/business/GapUtilTest.java
 /Users/bliddle/IdeaProjects/cs_reservation/src/test/java/com/campsite/business/impl/ReservationRuleTest.java
 /Users/bliddle/IdeaProjects/cs_reservation/src/test/java/com/campsite/service/ReservationServiceTest.java
 /Users/bliddle/IdeaProjects/cs_reservation/src/test/java/com/campsite/ReservationBaseTest.java
 /Users/bliddle/IdeaProjects/cs_reservation/src/test/java/com/campsite/dao/ReservationTestCacheTest.java
+/Users/bliddle/IdeaProjects/cs_reservation/src/test/java/com/campsite/business/ReservationUtilTest.java

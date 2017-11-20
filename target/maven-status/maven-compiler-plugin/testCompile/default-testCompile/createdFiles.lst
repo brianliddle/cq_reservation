@@ -1,3 +1,5 @@
+com/campsite/business/ReservationUtilTest.class
+com/campsite/business/GapUtilTest.class
 com/campsite/business/impl/ReservationRuleTest.class
 com/campsite/dao/ReservationTestCacheTest.class
 com/campsite/service/ReservationServiceTest.class
