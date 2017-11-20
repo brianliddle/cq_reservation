@@ -12,16 +12,40 @@ import org.junit.Test;
 import java.util.List;
 
 public class ReservationServiceTest extends ReservationBaseTest {
-    private static final Logger log = LogManager.getLogger(ReservationServiceTest.class);
 
     @Test
-    public void getAvailableCampsites_gap2() {
-        log.info("TEST - getAvailableCampsites_gap2");
+    public void getAvailableCampsites() {
+        for (Gaprule rule : gapRules) {
+            List<Campsite> campResults =
+                    rezSvc.getAvailableCampsites(rule, startDate, endDate);
 
-        //TODO: make the test generic so that we're not coupled to gap data
-        List<Campsite> campResults =
-                rezSvc.getAvailableCampsites(gapRules.get(0), startDate, endDate);
+            switch (rule.getGapSize()) {
+                case 1: assertGap1(campResults);
+                    break;
+                case 2: assertGap2(campResults);
+                    break;
+                case 3: assertGap3(campResults);
+                    break;
 
+                default: Assert.assertTrue(
+                        "Gaprule, " +rule.getGapSize()+ ", exists that hasn't been defined yet.",
+                        true == false);
+            }
+        }
+    }
+
+    private void assertGap1(List<Campsite> campResults) {
+        Assert.assertNotNull(campResults);
+        for (Campsite c : campResults) {
+            Assert.assertTrue("Invalid camp added to available camps.",
+                    c.getId() == 1 || c.getId() == 3 || c.getId() == 6 || c.getId() == 8);
+
+            Assert.assertTrue("Invalid camp added to available camps.",
+                    c.getId() !=2 && c.getId() != 4 && c.getId() != 5 && c.getId() != 7 && c.getId() != 9);
+        }
+    }
+
+    private void assertGap2(List<Campsite> campResults) {
         Assert.assertNotNull(campResults);
         for (Campsite c : campResults) {
             Assert.assertTrue("Invalid camp added to available camps.",
@@ -30,15 +54,9 @@ public class ReservationServiceTest extends ReservationBaseTest {
             Assert.assertTrue("Invalid camp added to available camps.",
                     c.getId() !=1 && c.getId() !=2 && c.getId() != 4 && c.getId() != 5 && c.getId() != 7 && c.getId() != 9);
         }
-        Assert.assertTrue(campResults.size() == 3);
     }
-    @Test
-    public void getAvailableCampsites_gap3() {
-        log.info("TEST - getAvailableCampsites_gap3");
-        //TODO: make the test generic so that we're not coupled to gap data
-        List<Campsite> campResults =
-                rezSvc.getAvailableCampsites(gapRules.get(1), startDate, endDate);
 
+    private void assertGap3(List<Campsite> campResults) {
         Assert.assertNotNull(campResults);
         campResults = rezSvc.getAvailableCampsites(gapRules.get(1), startDate, endDate);
         Assert.assertNotNull(campResults);
@@ -49,7 +67,5 @@ public class ReservationServiceTest extends ReservationBaseTest {
             Assert.assertTrue("Invalid camp added to available camps.",
                     c.getId() != 1 && c.getId() != 2 && c.getId() != 3 && c.getId() != 4 && c.getId() != 5 && c.getId() != 7 && c.getId() != 9);
         }
-        Assert.assertTrue(campResults.size() == 2);
     }
-
 }

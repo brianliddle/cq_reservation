@@ -1,14 +1,19 @@
 package com.campsite.dao;
 
 import com.campsite.ReservationBaseTest;
+import com.campsite.business.ReservationHashKey;
 import com.campsite.model.Reservation;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import static com.campsite.business.ReservationHashKey.NEXT;
+import static com.campsite.business.ReservationHashKey.PRIOR;
+import static com.campsite.business.ReservationHashKey.CONFLICT;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 /** TODO: leverage dependency injection so that we test against the interface, not the concrete class **/
@@ -29,101 +34,38 @@ public class ReservationTestCacheTest extends ReservationBaseTest{
     }
 
     @Test
-    public void getPriorReservation() {
-        LocalDate startDate = LocalDate.of(2016, 6, 5);
-        LocalDate endDate = LocalDate.of(2016,6,8);
+    public void getNextPriorReservation() {
+        LocalDate startDate = LocalDate.of(2016,6,5);
+        LocalDate endDate = LocalDate.of(2016,6,6);
         int campId = 10;
 
-        try {
-            Reservation priorRes = rezDao.getPriorReservation(startDate, endDate, campId);
-            Assert.assertTrue("Prior reservation should not be null.", priorRes != null);
-            Assert.assertTrue("CampsiteId should be, 10", campId == priorRes.getCampsiteId());
-            Assert.assertTrue("Prior Reservation should end 2016/06/04.", priorRes.getEndDate().getDayOfMonth() == 4 );
-
-        } catch (Exception e) { /** no-op **/ }
-
+        Map<ReservationHashKey, Reservation> nextPriorMap = rezDao.getNextPriorReservation(startDate, endDate, campId);
+        Assert.assertTrue("CampsiteId should be, 10", campId == nextPriorMap.get(PRIOR).getCampsiteId());
+        Assert.assertTrue("Prior Reservation should end 2016/06/04.", nextPriorMap.get(PRIOR).getEndDate().getDayOfMonth() == 4 );
+        Assert.assertTrue("Next Reservation should end 2016/06/07.", nextPriorMap.get(NEXT).getStartDate().getDayOfMonth() == 7 );
     }
 
     @Test
-    public void getPriorRes_noPriorReservationsExist() {
+    public void getNextPriorRes_noPriorReservationsExist() {
         LocalDate startDate = LocalDate.of(2016, 5, 5);
         LocalDate endDate = LocalDate.of(2016,5,8);
         int campId = 10;
-        try {
-            Reservation priorRes = rezDao.getPriorReservation(startDate, endDate, campId);
-            Assert.assertTrue("Prior reservation should be null.", priorRes == null);
-        } catch (Exception e) { /** no-op **/ }
+
+        Map<ReservationHashKey, Reservation> nextPriorMap = rezDao.getNextPriorReservation(startDate, endDate, campId);
+        Assert.assertTrue("PRIOR reservation should be null.", nextPriorMap.get(PRIOR) == null);
+        Assert.assertTrue("Next Reservation should end 2016/06/07.", nextPriorMap.get(NEXT).getStartDate().getDayOfMonth() == 25 );
+        Assert.assertTrue("CONFLICT reservation should not exist.", !nextPriorMap.containsKey(CONFLICT));
     }
 
     @Test
-    public void getPriorRes_reservationSameAsTarget() {
-        LocalDate startDate = LocalDate.of(2016, 6, 4);
-        LocalDate endDate = LocalDate.of(2016,6,8);
-        int campId = 10;
-        try{
-            Reservation priorRes = rezDao.getPriorReservation(startDate, endDate, campId);
-            Assert.assertTrue("Prior reservation should not be null.", priorRes != null);
-            Assert.assertTrue("Prior Reservation should end 2016/06/04.", priorRes.getEndDate().getDayOfMonth() == 4 );
-        } catch (Exception e) { /** no-op **/ }
-    }
-
-    @Test
-    public void getPriorRes_targetInMiddleOfReservation() {
+    public void getNextPriorRes_targetInMiddleOfReservation() {
         LocalDate startDate = LocalDate.of(2016, 6, 2);
         LocalDate endDate = LocalDate.of(2016,6,4);
         int campId = 10;
-        try {
-            Reservation priorRes = rezDao.getPriorReservation(startDate, endDate, campId);
-            Assert.assertTrue("Prior reservation should not be null.", priorRes != null);
-            Assert.assertTrue("Prior Reservation should end 2016/06/04.", priorRes.getEndDate().getDayOfMonth() == 4 );
-        } catch (Exception e) { /** no-op **/ }
-    }
 
-    @Test
-    public void getNextReservation() {
-        LocalDate startDate = LocalDate.of(2016, 6, 2);
-        LocalDate endDate = LocalDate.of(2016, 6, 5);
-        int campId = 10;
-        try {
-            Reservation nextRes = rezDao.getNextReservation(startDate, endDate, campId);
-            Assert.assertTrue("Next reservation should not be null.", nextRes != null);
-            Assert.assertTrue("CampsiteId should be, 10", campId == nextRes.getCampsiteId());
-            Assert.assertTrue("Next Reservation should begin 2016/6/7.", nextRes.getStartDate().getDayOfMonth() == 7);
-        } catch (Exception e) { /** no-op **/ }
-    }
-
-    @Test
-    public void getNextRes_noNextResExists() {
-        LocalDate startDate = LocalDate.of(2016, 7, 3);
-        LocalDate endDate = LocalDate.of(2016, 7, 5);
-        int campId = 10;
-        try{
-            Reservation nextRes = rezDao.getNextReservation(startDate,endDate, campId);
-            Assert.assertTrue("Next reservation should be null.", nextRes == null);
-        } catch (Exception e) { /** no-op **/ }
-    }
-
-    @Test
-    public void getNextRes_reservationSameAsTarget() {
-        LocalDate startDate = LocalDate.of(2016, 6, 5);
-        LocalDate endDate = LocalDate.of(2016, 6, 7);
-        int campId = 10;
-        try{
-            Reservation nextRes = rezDao.getNextReservation(startDate, endDate, campId);
-            Assert.assertTrue("Next reservation should not be null.", nextRes != null);
-            Assert.assertTrue("Next Reservation should begin 2016/6/7.", nextRes.getStartDate().getDayOfMonth() == 7);
-        } catch (Exception e) { /** no-op **/ }
-    }
-
-    @Test
-    public void getNextRes_targetInMiddleOfReservation() {
-        LocalDate startDate = LocalDate.of(2016, 6, 5);
-        LocalDate endDate = LocalDate.of(2016, 6, 8);
-        int campId = 10;
-        try {
-            Reservation nextRes = rezDao.getNextReservation(startDate, endDate, campId);
-            Assert.assertTrue("Next reservation should not be null.", nextRes != null);
-            Assert.assertTrue("Next Reservation should end 2016/6/10.", nextRes.getEndDate().getDayOfMonth() == 10);
-        } catch (Exception e) { /** no-op **/ }
+        Map<ReservationHashKey, Reservation> nextPriorMap = rezDao.getNextPriorReservation(startDate, endDate, campId);
+        Assert.assertTrue("No prior reservation should exist.", !nextPriorMap.containsKey(PRIOR));
+        Assert.assertTrue("No next reservation should exist.", !nextPriorMap.containsKey(NEXT));
+        Assert.assertTrue("Conflict should be defined.", nextPriorMap.containsKey(CONFLICT));
     }
 }

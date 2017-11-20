@@ -1,18 +1,15 @@
 package com.campsite.dao;
 
-import com.campsite.business.ReservationConflictException;
+import com.campsite.business.ReservationHashKey;
 import com.campsite.model.Reservation;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public interface ReservationDAO {
     List<Reservation> getReservations(LocalDate startDate, LocalDate endDate, int campsiteId);
-
-    Reservation getPriorReservation(LocalDate startDate, LocalDate endDate, int campsiteId) throws ReservationConflictException;
-
-    Reservation getNextReservation(LocalDate startDate, LocalDate endDate, int campsiteId) throws ReservationConflictException;
-
+    Map<ReservationHashKey, Reservation> getNextPriorReservation(LocalDate startDate, LocalDate endDate, int campsiteId);
 
 /** Consider for later development **/
 

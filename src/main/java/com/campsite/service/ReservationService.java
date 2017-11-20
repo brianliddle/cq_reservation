@@ -1,6 +1,6 @@
 package com.campsite.service;
 
-import com.campsite.business.ReservationConflictException;
+import com.campsite.business.ReservationHashKey;
 import com.campsite.business.RuleEngine;
 import com.campsite.business.impl.ReservationRule;
 import com.campsite.dao.CampsiteDAO;
@@ -13,13 +13,16 @@ import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
-/** NOTE, keeping as a concrete class until multiple usecases involving a generic contract is identified **/
+import static com.campsite.business.ReservationHashKey.*;
+
+/**
+ * Service layer for orchestrating Resercation logic.
+ */
 
 public class ReservationService {
-    private static final Logger log = LogManager.getLogger(ReservationService.class);
 
     /** TODO Dependency Inject **/
     private ReservationDAO resDao;
@@ -40,20 +43,15 @@ public class ReservationService {
         List<Campsite> availCampsites = new ArrayList<Campsite>();
 
         for (Campsite camp : campDao.getCampsites()) {
-            Reservation beforeRes;
-            Reservation afterRes;
 
-            //While an anti-pattern, I leveraged throwing a checked exception to keep from iterating against a
-            // collection of reservations more than once. Consider refactoring so that neither performance, nor
-            // separation of concerns is effected that doesn't involve using an exception for logic handling.
-            try {
-                beforeRes = resDao.getPriorReservation(startDate, endDate, camp.getId());
-                afterRes = resDao.getNextReservation(startDate, endDate, camp.getId());
-            } catch (ReservationConflictException e) {
+            Map<ReservationHashKey, Reservation> nextPriorRes =
+                    resDao.getNextPriorReservation(startDate, endDate, camp.getId());
+
+            if (nextPriorRes.containsKey(CONFLICT)) {
                 continue;
             }
 
-            if (ruleEngine.isValid(startDate, endDate, beforeRes, afterRes, rule))
+            if (ruleEngine.isValid(startDate,endDate,nextPriorRes.get(PRIOR),nextPriorRes.get(NEXT), rule))
             {
                 availCampsites.add(camp);
             }

@@ -5,11 +5,9 @@ import com.campsite.model.Reservation;
 import java.time.LocalDate;
 
 public class ReservationUtil {
+    /** Utility used to thoroughly test scenario's critical to reservation analysis. **/
     public static boolean hasConflict(LocalDate start, LocalDate end, Reservation r) {
-
-        if (!end.isBefore(r.getStartDate()) && !start.isAfter(r.getEndDate())) {
-            return true;
-        }
-        return false;
+        return (!end.isBefore(r.getStartDate()) && !start.isAfter(r.getEndDate())) ?
+                true : false;
     }
 }
