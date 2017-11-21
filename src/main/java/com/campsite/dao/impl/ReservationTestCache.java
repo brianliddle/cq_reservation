@@ -19,7 +19,7 @@ public class ReservationTestCache implements ReservationDAO {
             new HashMap<Integer, ArrayList<Reservation>>();
 
     /**
-     * Returns a map containing the reservation following and preceding a requested reservation
+     * Returns a map containing the reservations following and preceding a requested reservation
      * start and end date for a given campsite.
      * NOTE: If a conflict of dates is found, adds the CONFLICT reservation to the map.
      *
@@ -42,12 +42,12 @@ public class ReservationTestCache implements ReservationDAO {
                 return returnRes;
             }
 
-            //find the reservation closest to startDate in the future
+            //find the reservation closest to startDate in the past
             if (! r.getEndDate().isAfter(startDate) &&
                     (prior == null || r.getEndDate().isAfter(prior.getEndDate())) )
             { prior = r; }
 
-            //find the reservation closest to endDate date in the past
+            //find the reservation closest to endDate date in the future
             if (! r.getStartDate().isBefore(endDate) &&
                     (next == null || r.getStartDate().isBefore(next.getStartDate())) )
             { next = r; }
